@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
+
 import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
 
 type SectionProps = PropsWithChildren<{
@@ -51,8 +52,17 @@ function App(): JSX.Element {
 
   useEffect(() => {
     requestPermission();
+    getFcmToken();
   }, []);
 
+  const getFcmToken = async () => {
+    try {
+      const token = await messaging().getToken();
+      console.log('token', token);
+    } catch (ex) {
+      console.log('cannot get token', ex);
+    }
+  };
   const requestPermission = async () => {
     try {
       await messaging().requestPermission();
